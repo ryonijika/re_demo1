@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マウス操作誤差調査</title>
+</head>
+<body>
+    <style>
+        #canvasContainer {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+    <button id="start">開始</button>
+    <div id="canvasContainer" style="display: none;">
+        <span id="timer">00:00</span>
+        <canvas id="myCanvas" width="300" height="150" style="border:1px solid #000000;"></canvas>
+    </div>    
+    <div id="finish" style="display: none;">
+        <span id="resultmessage"></span>
+        <br>
+        <span id="result"></span>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        const sizeWidth = 600
+        const sizeHeight = 600
+        let theNumberOfQuestions = 20;
+        let theNumberOfTrials = 0;
+        let theNumberOfCorrectAnswers = 0;
+        let correctAnswer;
+        let timerInterval;
+        let timeLimit = 1 * 60; // 5分間の制限時間（秒数）
+        let timeRemaining = 0;
+        let isTestRunning = false;
+        
+        var canvas = $('#myCanvas');
+        var context = canvas.get(0).getContext('2d');
+
+        function getRandomPosition (sizeX, sizeY) {
+            return {'x': Math.floor(Math.random() * sizeX), 'y':Math.floor(Math.random() * sizeY)}
+        }
+
+// カウントダウンタイマーを開始する関数
+        function startTimer(duration, display) {
+            timeRemaining = duration;
+            updateTimerDisplay(timeRemaining, display); // タイマー表示を更新
+
+            timerInterval = setInterval(function () {
+                updateTimerDisplay(--timeRemaining, display); // 1秒ごとにタイマーを更新
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    finish();
+                }
+            }, 1000);
+        }
+
+        // タイマー表示を更新する関数
+        function updateTimerDisplay(timeLeft, display) {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const formattedTime = `${padZero(minutes)}:${padZero(seconds)}`;
+            display.text(formattedTime);
+        }
+
+        // ゼロパディングを行う関数
+        function padZero(num) {
+            return (num < 10 ? '0' : '') + num;
+        }
+
+        // 問題を出題する関数
+        function askAQuestion() {
+            const canvas = window.document.getElementById('myCanvas')
+            const ctx = canvas.getContext('2d')
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            correctAnswer = getRandomPosition(sizeWidth, sizeHeight)
+            // サイズ変更後の確認用に簡単な描画を行う
+            context.fillStyle = "blue";
+            context.fillRect(correctAnswer.x, correctAnswer.y, 20, 20);
+        }
+
+        // 回答を処理する関数
+        function answerDetected(mouseX, mouseY) {
+            theNumberOfTrials++;
+            // 距離を計算
+            errorDistance = Math.sqrt((correctAnswer.x - mouseX)**2 + (correctAnswer.y - mouseY)**2)
+            console.log(errorDistance)
+            if (theNumberOfTrials < theNumberOfQuestions) {
+                askAQuestion();
+            } else {
+                finish();
+            }
+        }
+
+        // 試験を終了する関数
+        function finish() {
+            isTestRunning = false;
+            const answerTime = timeLimit - timeRemaining;
+            // 時間内に全て回答した場合は時計を止める
+            clearInterval(timerInterval);
+            $('#canvasContainer').hide();
+            $('#finish').show();
+            $('#resultmessage').text('以下が結果です');
+            $('#result').text(`回答時間 ${answerTime}s 正答数 ${theNumberOfCorrectAnswers}, 回答数 ${theNumberOfTrials}, 問題数 ${theNumberOfQuestions}`);
+        }
+
+        function resize() {
+             $('#myCanvas').attr({
+                    width: sizeWidth,
+                    height: sizeHeight
+            });
+
+            // Canvasの描画コンテキストをクリアして新しいサイズに合わせてリセット
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        $(document).mousedown(function(event) {
+            if (isTestRunning) {
+                var canvasOffset = canvas.offset();
+                var offsetX = canvasOffset.left;
+                var offsetY = canvasOffset.top;
+                var mouseX = event.pageX - offsetX;
+                var mouseY = event.pageY - offsetY;
+                answerDetected(mouseX, mouseY)
+            }
+        });
+
+        // 開始ボタンクリック時の処理
+        $('#start').click(function () {
+            isTestRunning = true;
+            $(this).hide();
+            resize()
+            $('#canvasContainer').show();
+            startTimer(timeLimit, $('#timer'));
+            askAQuestion();
+        });
+
+    </script>
+</body>
+</html>

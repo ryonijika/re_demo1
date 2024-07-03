@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <style type="text/css">
+        body {
+            text-align: center;
+        }
+        #inner {
+            font-size: 50px;
+            max-width: 500px;
+            margin: 0 auto; /* 中央揃え */
+            text-align: center; /* 中央揃え */
+        }
+        #finish {
+            font-size: 20px;
+            max-width: 500px;
+            margin: 0 auto; /* 中央揃え */
+            text-align: center; /* 中央揃え */
+        }
+    </style>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Halfmoon/1.0.4/js/halfmoon.min.js"></script>
+    <meta charset="UTF-8">
+    <title>認知科学</title>
+</head>
+<body>
+    <button id="start">開始する</button>
+    <div id="inner" style="display: none;">
+        <span id="timer">00:00</span>
+        <br>
+        <span id="question"></span>
+        <span id="answer"></span>
+    </div>
+    <div id="finish" style="display: none;">
+        <span id="resultmessage"></span>
+        <br>
+        <span id="result"></span>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let theNumberOfQuestions = 5;
+            let theNumberOfTrials = 0;
+            let theNumberOfCorrectAnswers = 0;
+            let correctAnswer;
+            let timerInterval;
+            let timeLimit = 5 * 60; // 5分間の制限時間（秒数）
+            let timeRemaining = 0;
+            let isTestRunning = false;
+
+            // ランダムな2桁の数を生成する関数
+            function getRandom() {
+                return Math.floor(Math.random() * 900) + 100;
+            }
+
+            // カウントダウンタイマーを開始する関数
+            function startTimer(duration, display) {
+                timeRemaining = duration;
+                updateTimerDisplay(timeRemaining, display); // タイマー表示を更新
+
+                timerInterval = setInterval(function () {
+                    updateTimerDisplay(--timeRemaining, display); // 1秒ごとにタイマーを更新
+
+                    if (timeRemaining <= 0) {
+                        clearInterval(timerInterval);
+                        finish();
+                    }
+                }, 1000);
+            }
+
+            // タイマー表示を更新する関数
+            function updateTimerDisplay(timeLeft, display) {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                const formattedTime = `${padZero(minutes)}:${padZero(seconds)}`;
+                display.text(formattedTime);
+            }
+
+            // ゼロパディングを行う関数
+            function padZero(num) {
+                return (num < 10 ? '0' : '') + num;
+            }
+
+            // 問題を出題する関数
+            function askAQuestion() {
+                const numberA = getRandom();
+                const numberB = getRandom();
+                correctAnswer = numberA + numberB;
+                $('#question').text(`${numberA} + ${numberB} = `);
+                $('#answer').text('');
+            }
+
+            // 回答が正しいかどうかを判定する関数
+            function isAnswerCorrect() {
+                const answer = Number($('#answer').text());
+                return answer === correctAnswer;
+            }
+
+            // 回答を処理する関数
+            function answerDetected() {
+                theNumberOfTrials++;
+                if (isAnswerCorrect()) {
+                    theNumberOfCorrectAnswers++;
+                }
+                if (theNumberOfTrials < theNumberOfQuestions) {
+                    askAQuestion();
+                } else {
+                    finish();
+                }
+            }
+
+            // 試験を終了する関数
+            function finish() {
+                isTestRunning = false;
+                const answerTime = timeLimit - timeRemaining;
+                // 時間内に全て回答した場合は時計を止める
+                clearInterval(timerInterval);
+                $('#inner').hide();
+                $('#finish').show();
+                $('#resultmessage').text('以下が結果です');
+                $('#result').text(`回答時間 ${answerTime}s 正答数 ${theNumberOfCorrectAnswers}, 回答数 ${theNumberOfTrials}, 問題数 ${theNumberOfQuestions}`);
+            }
+
+            // 試験の状態をリセットする関数
+            function reset() {
+                theNumberOfTrials = 0;
+                theNumberOfCorrectAnswers = 0;
+                $('#start').show();
+                $('#timer').text('5:00');
+            }
+
+            // キーボード入力を検知する処理
+            $(document).keydown(function (event) {
+                // 試験前にenterで回答扱いされて回答数が増えるみたいなことを防ぎたい
+                if (isTestRunning) {
+                    if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105)) {
+                        const text = $('#answer').text();
+                        const updated = text + event.key;
+                        $('#answer').text(updated);
+                    } else if (event.keyCode === 8) { // Backspaceキー
+                        const text = $('#answer').text();
+                        const updated = text.slice(0, -1);
+                        $('#answer').text(updated);
+                    } else if (event.keyCode === 13) { // Enterキー
+                        answerDetected();
+                    }
+                }
+            });
+
+            // 開始ボタンクリック時の処理
+            $('#start').click(function () {
+                isTestRunning = true;
+                $(this).hide();
+                $('#inner').show();
+                startTimer(timeLimit, $('#timer'));
+                askAQuestion();
+            });
+        });
+    </script>
+</body>
+</html>
