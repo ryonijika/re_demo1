@@ -1,431 +1,419 @@
 <!DOCTYPE html>
-<script>
-const table = [{
-  "a": {
-    "name": "缶コーヒー",
-    "price": 120,
-    "size": 1
-  },
-  "b": {
-    "name": "水入りペットボトル",
-    "price": 130,
-    "size": 12
-  },
-  "c": {
-    "name": "バナナ",
-    "price": 80,
-    "size": 7
-  },
-  "d": {
-    "name": "りんご",
-    "price": 100,
-    "size": 6
-  },
-  "e": {
-    "name": "オレンジ",
-    "price": 90,
-    "size": 5
-  },
-  "f": {
-    "name": "イチゴ",
-    "price": 150,
-    "size": 9
-  }
-},
-{
-  "g": {
-    "name": "メロン",
-    "price": 300,
-    "size": 15
-  },
-  "h": {
-    "name": "パン",
-    "price": 200,
-    "size": 4
-  },
-  "i": {
-    "name": "チーズケーキ",
-    "price": 500,
-    "size": 8
-  },
-  "j": {
-    "name": "ピザ",
-    "price": 400,
-    "size": 10
-  },
-  "k": {
-    "name": "サンドイッチ",
-    "price": 250,
-    "size": 6
-  },
-  "l": {
-    "name": "ラーメン",
-    "price": 300,
-    "size": 7
-  }
-},
-{
-  "m": {
-    "name": "寿司",
-    "price": 600,
-    "size": 5
-  },
-  "n": {
-    "name": "カレーライス",
-    "price": 350,
-    "size": 8
-  },
-  "o": {
-    "name": "ハンバーガー",
-    "price": 280,
-    "size": 6
-  },
-  "p": {
-    "name": "フライドチキン",
-    "price": 180,
-    "size": 5
-  },
-  "q": {
-    "name": "サラダ",
-    "price": 150,
-    "size": 3
-  },
-  "r": {
-    "name": "コーラ",
-    "price": 100,
-    "size": 2
-  }
-},
-{
-  "s": {
-    "name": "ジュース",
-    "price": 120,
-    "size": 3
-  },
-  "t": {
-    "name": "ビール",
-    "price": 200,
-    "size": 4
-  },
-  "u": {
-    "name": "ワイン",
-    "price": 500,
-    "size": 5
-  },
-  "v": {
-    "name": "日本酒",
-    "price": 400,
-    "size": 6
-  },
-  "w": {
-    "name": "ウイスキー",
-    "price": 600,
-    "size": 7
-  },
-  "x": {
-    "name": "テレビ",
-    "price": 100,
-    "size": 5
-  }
-},
-{
-  "y": {
-    "name": "冷蔵庫",
-    "price": 300,
-    "size": 10
-  },
-  "z": {
-    "name": "洗濯機",
-    "price": 200,
-    "size": 3
-  },
-  "aa": {
-    "name": "電子レンジ",
-    "price": 830,
-    "size": 2
-  },
-  "ab": {
-    "name": "トースター",
-    "price": 530,
-    "size": 1
-  },
-  "ac": {
-    "name": "コーヒーメーカー",
-    "price": 60,
-    "size": 10
-  },
-  "ad": {
-    "name": "掃除機",
-    "price": 150,
-    "size": 25
-  }
-},
-{
-  "ae": {
-    "name": "扇風機",
-    "price": 700,
-    "size": 12
-  },
-  "af": {
-    "name": "エアコン",
-    "price": 250,
-    "size": 40
-  },
-  "ag": {
-    "name": "ラジオ",
-    "price": 300,
-    "size": 8
-  },
-  "ah": {
-    "name": "スマートフォン",
-    "price": 600,
-    "size": 5
-  },
-  "ai": {
-    "name": "ノートパソコン",
-    "price": 800,
-    "size": 10
-  },
-  "aj": {
-    "name": "タブレット",
-    "price": 400,
-    "size": 8
-  }
-}]
-</script>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <title>認知</title>
-</head>
-<style>
-
-body {
-	text-align: center;
-}
-
-p {
-	font-size: 18px;
-	margin: 15px;
-}
-
-#timer {
-	font-size: 30px;
-	font-weight: bold;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 15px 0;
-  font-size: 18px;
-  text-align: left;
-}
-
-/* テーブルのヘッダー */
-th, td {
-  padding: 12px;
-  border: 1px solid #dddddd;
-}
-
-/* ヘッダーの背景色とフォントスタイル */
-th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-}
-
-/* 奇数行と偶数行の背景色 */
-tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-tr:nth-child(odd) {
-  background-color: #ffffff;
-}
-
-/* テーブルのボーダー */
-table, th, td {
-  border: 1px solid #ddd;
-}
-
-/* テキストの色 */
-th, td {
-  color: #333;
-}
-
-/* セレクトボックスのスタイル */
-select {
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #fff;
-  color: #333;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* ボタンの基本スタイル */
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin: 15px;
-}
-
-</style>
-<body>
-<div id="intro">
-	<button id="ready">開始</button>
-</div>	
-<div id="for_test">
-	<p id="timer"></p>
-	<div id="active"></div>
-	<button id="complete">完了</button>
-</div>
-<div id="result">
-	<p id="view"></p>
-</div>	
-</body>
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-<script>
-
-const SIZE_LIMIT = 30
-const TIME_LIMIT = 5 * 60; // 5分間の制限時間（秒数）
-let price_cumulative = 0
-let questionCount = 0
-const numberOfQuestions = table.length
-
-// カウントダウンタイマーを開始する関数
-function startTimer(duration, display) {
-    timeRemaining = duration;
-    updateTimerDisplay(timeRemaining, display); // タイマー表示を更新
-
-    timerInterval = setInterval(function () {
-        updateTimerDisplay(--timeRemaining, display); // 1秒ごとにタイマーを更新
-
-        if (timeRemaining <= 0) {
-            clearInterval(timerInterval);
-            finish();
+    <style>
+        body {
+            text-align: center;
         }
-    }, 1000);
-}
 
-// タイマー表示を更新する関数
-function updateTimerDisplay(timeLeft, display) {
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-    const formattedTime = `${padZero(minutes)}:${padZero(seconds)}`;
-    display.text(formattedTime);
-}
+        p {
+            font-size: 18px;
+            margin: 15px;
+        }
 
-// ゼロパディングを行う関数
-function padZero(num) {
-    return (num < 10 ? '0' : '') + num;
-}
+        #timer {
+            font-size: 30px;
+            font-weight: bold;
+        }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 18px;
+            text-align: left;
+        }
 
-function construct(reference) {
-    // テーブルのヘッダー
-    let table = `<table>
-        <thead>
-            <tr>
-                <th>選択</th>
-                <th>品物</th>
-                <th>一個当たりの価値</th>
-                <th>一個当たりのサイズ</th>
-            </tr>
-        </thead>
-        <tbody>`;
+        th, td {
+            padding: 12px;
+            border: 1px solid #dddddd;
+        }
 
-	for (let item in reference) {
-		table += `<tr>
-            <td>
-			<select id="${item}">
-			    <option value="0">0</option>
-			    <option value="1">1</option>
-			    <option value="2">2</option>
-			    <option value="3">3</option>
-			    <option value="4">4</option>
-			</select>	
-			</td>
-            <td>${reference[item].name}</td>
-            <td>${reference[item].price}</td>
-            <td>${reference[item].size}</td>
-        </tr>`;
-    }
-    // テーブルの終了タグ
-    table += `
-        </tbody>
-    </table>`;
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
 
-    $("#active").html(table)
-}
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
 
-function gettotal(table) {
-	let price_all = 0
-	let size_all = 0
-	for (let item in table) {
-		price_all += $(`#${item}`).val() * table[item].price
-		size_all += $(`#${item}`).val() * table[item].size
-	}
-	return {"price_all": price_all, "size_all": size_all}
-}
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
 
-function initialize() {
-	$("#intro").show()
-	$("#for_test").hide()
-	$("#result").hide()
-}
+        th, td {
+            color: #333;
+        }
 
-function start() {
-	construct(table[questionCount])
-	$("#intro").hide()
-	$("#for_test").show()
-    startTimer(TIME_LIMIT, $('#timer'));
-}
+        select {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #fff;
+            color: #333;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-function gonext() {
-	construct(table[questionCount])
-}
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 15px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="intro">
+        <button id="ready">開始</button>
+    </div>
+    <div id="for_test">
+        <p id="timer"></p>
+        <div id="active"></div>
+        <button id="complete">完了</button>
+    </div>
+    <div id="result">
+        <p id="view"></p>
+    </div>
 
-function finish() {
-	clearInterval(timerInterval);
-	$("#for_test").hide()
-	$("#result").show()
-	$("#result > #view").text(`累計価値${price_cumulative}`)
-}
+    <script>
+        // 質問データの定義
+        const table = [{
+            "a": {
+                "name": "缶コーヒー",
+                "price": 120,
+                "size": 1
+            },
+            "b": {
+                "name": "水入りペットボトル",
+                "price": 130,
+                "size": 12
+            },
+            "c": {
+                "name": "バナナ",
+                "price": 80,
+                "size": 7
+            },
+            "d": {
+                "name": "りんご",
+                "price": 100,
+                "size": 6
+            },
+            "e": {
+                "name": "オレンジ",
+                "price": 90,
+                "size": 5
+            },
+            "f": {
+                "name": "イチゴ",
+                "price": 150,
+                "size": 9
+            }
+        },
+        {
+            "g": {
+                "name": "メロン",
+                "price": 300,
+                "size": 15
+            },
+            "h": {
+                "name": "パン",
+                "price": 200,
+                "size": 4
+            },
+            "i": {
+                "name": "チーズケーキ",
+                "price": 500,
+                "size": 8
+            },
+            "j": {
+                "name": "ピザ",
+                "price": 400,
+                "size": 10
+            },
+            "k": {
+                "name": "サンドイッチ",
+                "price": 250,
+                "size": 6
+            },
+            "l": {
+                "name": "ラーメン",
+                "price": 300,
+                "size": 7
+            }
+        },
+        {
+            "m": {
+                "name": "寿司",
+                "price": 600,
+                "size": 5
+            },
+            "n": {
+                "name": "カレーライス",
+                "price": 350,
+                "size": 8
+            },
+            "o": {
+                "name": "ハンバーガー",
+                "price": 280,
+                "size": 6
+            },
+            "p": {
+                "name": "フライドチキン",
+                "price": 180,
+                "size": 5
+            },
+            "q": {
+                "name": "サラダ",
+                "price": 150,
+                "size": 3
+            },
+            "r": {
+                "name": "コーラ",
+                "price": 100,
+                "size": 2
+            }
+        },
+        {
+            "s": {
+                "name": "ジュース",
+                "price": 120,
+                "size": 3
+            },
+            "t": {
+                "name": "ビール",
+                "price": 200,
+                "size": 4
+            },
+            "u": {
+                "name": "ワイン",
+                "price": 500,
+                "size": 5
+            },
+            "v": {
+                "name": "日本酒",
+                "price": 400,
+                "size": 6
+            },
+            "w": {
+                "name": "ウイスキー",
+                "price": 600,
+                "size": 7
+            },
+            "x": {
+                "name": "テレビ",
+                "price": 100,
+                "size": 5
+            }
+        },
+        {
+            "y": {
+                "name": "冷蔵庫",
+                "price": 300,
+                "size": 10
+            },
+            "z": {
+                "name": "洗濯機",
+                "price": 200,
+                "size": 3
+            },
+            "aa": {
+                "name": "電子レンジ",
+                "price": 830,
+                "size": 2
+            },
+            "ab": {
+                "name": "トースター",
+                "price": 530,
+                "size": 1
+            },
+            "ac": {
+                "name": "コーヒーメーカー",
+                "price": 60,
+                "size": 10
+            },
+            "ad": {
+                "name": "掃除機",
+                "price": 150,
+                "size": 25
+            }
+        },
+        {
+            "ae": {
+                "name": "扇風機",
+                "price": 700,
+                "size": 12
+            },
+            "af": {
+                "name": "エアコン",
+                "price": 250,
+                "size": 40
+            },
+            "ag": {
+                "name": "ラジオ",
+                "price": 300,
+                "size": 8
+            },
+            "ah": {
+                "name": "スマートフォン",
+                "price": 600,
+                "size": 5
+            },
+            "ai": {
+                "name": "ノートパソコン",
+                "price": 800,
+                "size": 10
+            },
+            "aj": {
+                "name": "タブレット",
+                "price": 400,
+                "size": 8
+            }
+        }]
 
-///
+        // 制限サイズと時間の定義
+        const SIZE_LIMIT = 30
+        const TIME_LIMIT = 5 * 60; // 5分間の制限時間（秒数）
+        let price_cumulative = 0
+        let questionCount = 0
+        const numberOfQuestions = table.length
 
-// テスト開始
-$("#intro > #ready").click(function() {
-	start()
-})
+        // カウントダウンタイマーを開始する関数
+        function startTimer(duration, display) {
+            timeRemaining = duration;
+            updateTimerDisplay(timeRemaining, display); // タイマー表示を更新
 
-// テスト中に完了
-$("#for_test > #complete").click(function() {
-	total = gettotal(table[questionCount])
-	if (total.size_all <= SIZE_LIMIT) {
-		price_cumulative += total.price_all
-	} else {
-		//サイズをオーバした場合は何もしない
-	}
-	questionCount += 1
-	console.log(`questionCount: ${questionCount}, total.size_all: ${total.size_all}, total.price_all: ${total.price_all}, price_cumulative: ${price_cumulative}`)
-	if (questionCount < numberOfQuestions) {
-		gonext()
-	} else {
-		finish()
-	}
-})
+            timerInterval = setInterval(function () {
+                updateTimerDisplay(--timeRemaining, display); // 1秒ごとにタイマーを更新
 
-initialize()
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    finish(); // タイムアップで終了処理を呼び出し
+                }
+            }, 1000);
+        }
 
-</script>
+        // タイマー表示を更新する関数
+        function updateTimerDisplay(timeLeft, display) {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const formattedTime = `${padZero(minutes)}:${padZero(seconds)}`;
+            display.text(formattedTime);
+        }
+
+        // ゼロパディングを行う関数
+        function padZero(num) {
+            return (num < 10 ? '0' : '') + num;
+        }
+
+        // テーブルを構築する関数
+        function construct(reference) {
+            // テーブルのヘッダー
+            let table = `<table>
+                <thead>
+                    <tr>
+                        <th>選択</th>
+                        <th>品物</th>
+                        <th>一個当たりの価値</th>
+                        <th>一個当たりのサイズ</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for (let item in reference) {
+                table += `<tr>
+                    <td>
+                        <select id="${item}">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>    
+                    </td>
+                    <td>${reference[item].name}</td>
+                    <td>${reference[item].price}</td>
+                    <td>${reference[item].size}</td>
+                </tr>`;
+            }
+            // テーブルの終了タグ
+            table += `
+                </tbody>
+            </table>`;
+
+            $("#active").html(table);
+        }
+
+        // 合計価値とサイズを計算する関数
+        function gettotal(table) {
+            let price_all = 0;
+            let size_all = 0;
+            for (let item in table) {
+                price_all += $(`#${item}`).val() * table[item].price;
+                size_all += $(`#${item}`).val() * table[item].size;
+            }
+            return {"price_all": price_all, "size_all": size_all};
+        }
+
+        // 初期化関数
+        function initialize() {
+            $("#intro").show();
+            $("#for_test").hide();
+            $("#result").hide();
+        }
+
+        // テストを開始する関数
+        function start() {
+            construct(table[questionCount]);
+            $("#intro").hide();
+            $("#for_test").show();
+            startTimer(TIME_LIMIT, $('#timer'));
+        }
+
+        // 次の質問に進む関数
+        function gonext() {
+            construct(table[questionCount]);
+        }
+
+        // テストを終了する関数
+        function finish() {
+            clearInterval(timerInterval);
+            $("#for_test").hide();
+            $("#result").show();
+            $("#result > #view").text(`累計価値${price_cumulative}`);
+        }
+
+        // テスト開始ボタンのクリックイベント
+        $("#intro > #ready").click(function() {
+            start();
+        });
+
+        // テスト中の完了ボタンのクリックイベント
+        $("#for_test > #complete").click(function() {
+            total = gettotal(table[questionCount]);
+            if (total.size_all <= SIZE_LIMIT) {
+                price_cumulative += total.price_all;
+            }
+            questionCount += 1;
+            if (questionCount < numberOfQuestions) {
+                gonext();
+            } else {
+                finish();
+            }
+        });
+
+        // 初期化処理
+        initialize();
+    </script>
+</body>
 </html>
