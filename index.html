@@ -1,13 +1,179 @@
 <!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>テストページ</title>
-  </head>
-  <body>
-  <h2>テストページ</h2>
-  <a href="./zure.html">ずれ</a>
-  <a href="./mistake.html">計算</a>
-  </body>
+<html>
+<head>
+    <style>
+        table {
+            font-size: 15px;
+            width: 100%;
+            border-collapse: collapse; /* セルの境界を合体させる */
+        }
+        th, td {
+            border:1px solid black; /* セルの境界線 */
+            padding: 5px; /* セル内の余白 */
+            text-align: center; /* セル内のテキストを中央揃え */
+        }
+        th {
+            background-color: #f2f2f2; /* ヘッダーの背景色 */
+        }
+        body {
+            font-size: 15px;
+        }
+        
+        input[type="checkbox"] {
+            position: relative;
+            width: 20px;
+            height: 20px;
+            border: 2px solid black;
+            vertical-align: middle;
+            appearance: none;
+        }
+        
+        input[type="checkbox"]:checked:before { /*純正のチェックボックスを非表示にしているので、チェックマークを独自で作る */
+            background-color: black;
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            width: 14px;
+            height: 14px;
+            content: '';
+        }
+        
+        #question > #complete {
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+<div id="result" style="display: none;">
+    <span></span>
+</div> 
+<div id="question">
+    <p>ここに設問文を入れる</p>
+    <form> 
+        <table>
+            <thead>
+                <tr>
+                    <th>選択</th>
+                    <th>品物</th>
+                    <th>一個当たりの価値</th>
+                    <th>一個当たりのサイズ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="checkbox" value="1"/>
+                    </td>
+                    <td>缶コーヒー</td>
+                    <td>120</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="checkbox" value="2"/>
+                    </td>
+                    <td>水入りペットボトル</td>
+                    <td>130</td>
+                    <td>12</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="checkbox" value="3"/>
+                    </td>
+                    <td>バナナ</td>
+                    <td>80</td>
+                    <td>7</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="checkbox" value="4"/>
+                    </td>
+                    <td>りんご</td>
+                    <td>100</td>
+                    <td>9</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="checkbox" value="5"/>
+                    </td>
+                    <td>おにぎり</td>
+                    <td>250</td>
+                    <td>21</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="checkbox" value="6"/>
+                    </td>
+                    <td>パン</td>
+                    <td>185</td>
+                    <td>16</td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <button id="complete" onclick="complete()">完了</button>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script>
+  reference = {
+    "1": {
+        "name": "缶コーヒー",
+        "price": 120,
+        "size": 10
+    },
+    "2": {
+        "name": "水入りペットボトル",
+        "price": 130,
+        "size": 12
+    },
+    "3": {
+        "name": "バナナ",
+        "price": 80,
+        "size": 7
+    },
+    "4": {
+        "name": "りんご",
+        "price": 100,
+        "size": 9
+    },
+    "5": {
+        "name": "おにぎり",
+        "price": 250,
+        "size": 21
+    },
+    "6": {
+        "name": "パン",
+        "price": 185,
+        "size": 16
+    }
+}
+
+function getExceeding(selected) {
+    let size_cumulative = 0
+    for (let i = 0; i < selected.length; i++) {
+        size_cumulative += reference[selected[i]].size
+    }
+    return size_cumulative
+}
+
+function getPriceCumulative(selected) {
+    let price_cumulative = 0
+    for (let i = 0; i < selected.length; i++) {
+        price_cumulative += reference[selected[i]].size
+    }
+    return price_cumulative
+}
+
+function complete() {
+    var selected = $('input[name="checkbox"]:checked').map(function() {
+        return $(this).val();
+    })
+    size_cumulative = getExceeding(selected)
+    price_cumulative = getPriceCumulative(selected)
+    $("#question").hide()
+    $("#result").show()
+    $("#result > span").text(`価値合計${price_cumulative} サイズ合計${size_cumulative}`)
+}
+</script>
 </html>
