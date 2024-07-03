@@ -199,15 +199,25 @@ const table = [{
     <title>認知</title>
 </head>
 <style>
-/* テーブル全体のスタイル */
+
+body {
+	text-align: center;
+}
 
 p {
 	font-size: 18px;
+	margin: 15px;
 }
+
+#timer {
+	font-size: 30px;
+	font-weight: bold;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
-  margin: 20px 0;
+  margin: 15px 0;
   font-size: 18px;
   text-align: left;
 }
@@ -265,6 +275,7 @@ button {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin: 15px;
 }
 
 </style>
@@ -273,6 +284,7 @@ button {
 	<button id="ready">開始</button>
 </div>	
 <div id="for_test">
+	<p id="timer"></p>
 	<div id="active"></div>
 	<button id="complete">完了</button>
 </div>
@@ -284,9 +296,39 @@ button {
 <script>
 
 const SIZE_LIMIT = 30
+const TIME_LIMIT = 5; // 5分間の制限時間（秒数）
 let price_cumulative = 0
 let questionCount = 0
 const numberOfQuestions = table.length
+
+// カウントダウンタイマーを開始する関数
+function startTimer(duration, display) {
+    timeRemaining = duration;
+    updateTimerDisplay(timeRemaining, display); // タイマー表示を更新
+
+    timerInterval = setInterval(function () {
+        updateTimerDisplay(--timeRemaining, display); // 1秒ごとにタイマーを更新
+
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            finish();
+        }
+    }, 1000);
+}
+
+// タイマー表示を更新する関数
+function updateTimerDisplay(timeLeft, display) {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    const formattedTime = `${padZero(minutes)}:${padZero(seconds)}`;
+    display.text(formattedTime);
+}
+
+// ゼロパディングを行う関数
+function padZero(num) {
+    return (num < 10 ? '0' : '') + num;
+}
+
 
 function construct(reference) {
     // テーブルのヘッダー
@@ -345,6 +387,7 @@ function start() {
 	construct(table[questionCount])
 	$("#intro").hide()
 	$("#for_test").show()
+    startTimer(TIME_LIMIT, $('#timer'));
 }
 
 function gonext() {
@@ -352,9 +395,10 @@ function gonext() {
 }
 
 function finish() {
+	clearInterval(timerInterval);
 	$("#for_test").hide()
 	$("#result").show()
-	$("#result > #view").text(`問題数${numberOfQuestions}, 累計価値${price_cumulative}`)
+	$("#result > #view").text(`累計価値${price_cumulative}`)
 }
 
 ///
