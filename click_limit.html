@@ -7,20 +7,45 @@
 </head>
 <body>
     <style>
+
+		body {
+			text-align: center;
+		}
+
+		p {
+			font-size: 18px;
+			margin: 15px;
+		}
         #canvasContainer {
             text-align: center;
             margin-top: 20px;
         }
+
+		#timer {
+			font-size: 30px;
+			font-weight: bold;
+		}
+
+		button {
+		  padding: 10px 20px;
+		  font-size: 16px;
+		  background-color: #007bff;
+		  color: #fff;
+		  border: none;
+		  border-radius: 4px;
+		  cursor: pointer;
+		  transition: background-color 0.3s ease;
+		  margin: 15px;
+		}
+
     </style>
     <button id="start">開始</button>
     <div id="canvasContainer" style="display: none;">
-        <span id="timer">00:00</span>
+        <p id="timer">00:00</p>
         <canvas id="myCanvas" width="300" height="150" style="border:1px solid #000000;"></canvas>
     </div>    
     <div id="finish" style="display: none;">
-        <span id="resultmessage"></span>
-        <br>
-        <span id="result"></span>
+        <p id="result"></p>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
@@ -35,6 +60,8 @@
         let timeRemaining = 0;
         let isTestRunning = false;
         
+        let cumulative_error = 0
+
         var canvas = $('#myCanvas');
         var context = canvas.get(0).getContext('2d');
 
@@ -77,8 +104,8 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height)
             correctAnswer = getRandomPosition(sizeWidth, sizeHeight)
             // サイズ変更後の確認用に簡単な描画を行う
-            context.fillStyle = "blue";
-            context.fillRect(correctAnswer.x, correctAnswer.y, 20, 20);
+            context.fillStyle = "red";
+            context.fillRect(correctAnswer.x, correctAnswer.y, 10, 10);
         }
 
         // 回答を処理する関数
@@ -86,7 +113,7 @@
             theNumberOfTrials++;
             // 距離を計算
             errorDistance = Math.sqrt((correctAnswer.x - mouseX)**2 + (correctAnswer.y - mouseY)**2)
-            console.log(errorDistance)
+            cumulative_error += errorDistance
             if (theNumberOfTrials < theNumberOfQuestions) {
                 askAQuestion();
             } else {
@@ -102,8 +129,7 @@
             clearInterval(timerInterval);
             $('#canvasContainer').hide();
             $('#finish').show();
-            $('#resultmessage').text('以下が結果です');
-            $('#result').text(`回答時間 ${answerTime}s 正答数 ${theNumberOfCorrectAnswers}, 回答数 ${theNumberOfTrials}, 問題数 ${theNumberOfQuestions}`);
+            $('#result').text(`回答時間 ${answerTime}s 累積誤差距離 ${parseInt(cumulative_error)}, 問題数 ${theNumberOfQuestions}`);
         }
 
         function resize() {
