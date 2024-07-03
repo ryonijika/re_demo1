@@ -160,7 +160,7 @@ function getExceeding(selected) {
 function getPriceCumulative(selected) {
     let price_cumulative = 0
     for (let i = 0; i < selected.length; i++) {
-        price_cumulative += reference[selected[i]].size
+        price_cumulative += reference[selected[i]].price
     }
     return price_cumulative
 }
