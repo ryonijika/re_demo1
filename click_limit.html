@@ -40,22 +40,22 @@
     </style>
 
     <div id="pre_intro">
-	    <p>はじめに練習問題を解いてください</p>
-	    <button id="pre_start">練習問題を開始する</button>
-	</div>
+        <p>はじめに練習問題を解いてください</p>
+        <button id="pre_start">練習問題を開始する</button>
+    </div>
 
     <!-- キャンバス表示領域 -->
     <div id="pre_canvasContainer" style="display: none;">
-    	<h2>これは練習問題です</h2>
-    	<p>黒い枠の内側に表示されている赤い点をマウスを使用して押してください。</p>
+        <h2>これは練習問題です</h2>
+        <p>黒い枠の内側に表示されている赤い点をマウスを使用して押してください。</p>
         <canvas id="pre_myCanvas" width="300" height="150" style="border:1px solid #000000;"></canvas>
     </div>
 
     <!-- 開始ボタン -->
     <div id="intro" style="display: none;">
-	    <p>ここから本問題に入ります</p>
-	    <button id="start">開始</button>
-	</div>
+        <p>ここから本問題に入ります</p>
+        <button id="start">開始</button>
+    </div>
 
     <!-- キャンバス表示領域 -->
     <div id="canvasContainer" style="display: none;">
@@ -71,9 +71,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
         // 定数と変数の宣言
+        const API_LINK = 'https://script.google.com/macros/s/AKfycbxqV_1pttmrSBP1WiYvTnF8pXWFlf39149FFt6IsUtnzTBwyf2WmeYWiqR3XIj9s00l7w/exec'
         const sizeWidth = 600;
         const sizeHeight = 600;
-        let theNumberOfQuestions = 20; // 質問の総数
+        let theNumberOfQuestions = 30; // 質問の総数
         let theNumberOfTrials = 0; // 現在の試行数
         let correctAnswer; // 正しい座標
         let timerInterval; // タイマーのインターバルID
@@ -89,11 +90,11 @@
         // スマホ禁止
         function initialize() {
             if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
-            	alert('スマートフォンは回答に使用できません')
+                alert('スマートフォンは回答に使用できません')
             }
-		}
-	initialize()
-	    
+        }
+    initialize()
+        
         // キャンバスとコンテキストの取得
         var canvas = $('#myCanvas');
         var context = canvas.get(0).getContext('2d');
@@ -154,6 +155,19 @@
             }
         }
 
+        // 結果を送信する関数。dataは辞書形式のデータを受け取る
+        function send(data) {
+            fetch(API_LINK, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'text/plain'
+                },
+                mode: 'no-cors',
+                body: JSON.stringify(data)
+              })
+
+        }
+
         // 試験を終了する関数
         function finish() {
             isTestRunning = false;
@@ -161,7 +175,16 @@
             clearInterval(timerInterval); // タイマーを停止
             $('#canvasContainer').hide(); // キャンバス表示を非表示
             $('#finish').show(); // 結果表示を表示
-            $('#result').text(`回答時間 ${answerTime}s 累積誤差距離 ${parseInt(cumulative_error)}, 問題数 ${theNumberOfQuestions}`);
+            $('#result').text(`データを記録しました。ご協力ありがとうございました。`);
+
+            data = {
+                "typeOfData": "click_limit",
+                "error": parseInt(cumulative_error),
+                "timeRemaining": timeRemaining,
+                "theNumberOfTrials": theNumberOfTrials,
+            }
+
+            send(data)
         }
 
         // キャンバスのサイズを変更する関数
@@ -231,7 +254,6 @@
             // 距離を計算
             pre_theNumberOfTrials++; // 試行回数を増加
             let errorDistance = Math.sqrt((correctAnswer.x - mouseX)**2 + (correctAnswer.y - mouseY)**2);
-            console.log(`練習誤差: ${errorDistance}`)
             if (pre_theNumberOfTrials < pre_theNumberOfQuestions) {
                 pre_askAQuestion(); // 次の質問
             } else {
@@ -253,7 +275,7 @@
 
         // 開始ボタンクリック時の処理
         $('#pre_start').click(function () {
-        	isPreTestRunning = true
+            isPreTestRunning = true
             $("#pre_intro").hide(); // 開始ボタンを非表示
             pre_resize(); // キャンバスのサイズを調整
             $('#pre_canvasContainer').show(); // キャンバス表示を表示
